@@ -1,2 +1,2 @@
-# Estoque-F-cil
+# Estoque-Fácil
 Projeto Estoque Fácil SENAC-DF
