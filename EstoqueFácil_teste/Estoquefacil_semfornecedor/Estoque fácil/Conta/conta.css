@@ -1,0 +1,261 @@
+body {
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.navbar {
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    display: flex;
+    justify-content: flex-start;
+    background-color: #4ade80;
+    width: 100%;
+    height: 60px;
+    align-items: center;
+    padding: 0 20px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+.navbar a {
+    text-decoration: none;
+    color: #1c1c1e;
+    padding: 10px 20px;
+    margin-right: 20px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.navbar a:hover {
+    background-color: #38b1b6;
+}
+
+.bi-bell {
+    padding-left: 15px;
+}
+
+#menuestoque {
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    color: #1c1c1e;
+    background-color: #4ade80; 
+    border: none; 
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    appearance: none; 
+    background-image: url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2012%2012%22%3E%3Cpath%20fill%3D%22%23000000%22%20d%3D%22M0%2C3L6%2C9L12%2C3H0Z%22%3E%3C/path%3E%3C/svg%3E');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 10px;
+    width: 110px;
+}
+
+.title {
+    font-family: "Poppins", sans-serif;
+    font-weight: 800;
+    font-style: normal;
+    position: absolute;
+    top: 40px;
+    left: 40px;
+    font-size: 25px;
+    font-style: bold;
+}
+
+.profile-container {
+    width: 100%;
+    margin: 20px auto;
+    display: flex;
+    font-family: 'Poppins', sans-serif;
+}
+
+.profile-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: flex-start;
+}
+
+.profile-image {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background-color: #eee;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 5em;
+    color: #999;
+    margin-right: 30px;
+}
+
+.edit-image {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    background-color: #ddd;
+    border: none;
+    border-radius: 50%;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.profile-details {
+    flex: 1;
+}
+
+.profile-details h2 {
+    font-size: 1.8em;
+    margin-bottom: 20px;
+}
+
+.detail-item {
+    margin-bottom: 20px;
+}
+
+.detail-item label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.detail-input {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.detail-input input {
+    border: none;
+    flex: 1;
+    padding: 5px;
+    font-size: 1em;
+}
+
+.detail-input input:focus {
+    outline: none;
+}
+
+.show-password {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    color: #666;
+}
+
+#button-container {
+    display: inline-block; 
+    justify-content: flex-start; 
+    gap: 10px;
+    margin-top: 20px;
+}
+
+#sair{
+    display: inline-block; 
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 6.7px 26px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-left: 20px;
+}
+
+#alterar-button, #save-button{
+    display: inline-block; 
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-left: 20px;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    background-color: #90EE90;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    border-radius: 5px;
+    padding: 5px;
+    opacity: 0.9;
+    white-space: nowrap;
+    width: 200px;
+}
+
+u {
+    color: #ffffff;
+}
+
+.dropdown-menu a {
+    color: #ffffff;
+    padding: 8px 12px;
+    text-decoration: none;
+    display: block;
+    font-size: 18px;
+    text-overflow: ellipsis;
+    width: 87%;
+}
+
+.dropdown-menu a:hover {
+    background-color: #c8e6c9;
+}
+
+.dropdown-toggle::after {
+    content: '\f0d7';
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    margin-left: 5px;
+    font-size: 22px;
+}
+
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+.person-circle {
+    margin-top: 6px;
+    margin-left: 10px;
+}
+
+.box-seam {
+    margin-top: 5px;
+    margin-left: 10px;
+}
+
+.bi-bell {
+    margin-top: 4px;
+    margin-left: -2px;
+}
+
+.bi-truck {
+    margin-top: 4px;
+    margin-left: 10px;
+}

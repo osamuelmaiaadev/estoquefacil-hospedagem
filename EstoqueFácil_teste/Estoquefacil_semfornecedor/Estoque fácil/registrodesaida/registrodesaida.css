@@ -1,0 +1,139 @@
+body {
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.navbar {
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    display: flex;
+    justify-content: flex-start;
+    background-color: #4ade80;
+    width: 100%;
+    height: 60px;
+    align-items: center;
+    padding: 0 20px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+.navbar a {
+    text-decoration: none;
+    color: #1c1c1e;
+    padding: 10px 20px;
+    margin-right: 20px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.navbar a:hover {
+    background-color: #38b1b6;
+}
+
+.bi-bell {
+    padding-left: 15px;
+}
+
+#menuestoque {
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    color: #1c1c1e;
+    background-color: #4ade80; 
+    border: none; 
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    appearance: none; 
+    background-image: url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2012%2012%22%3E%3Cpath%20fill%3D%22%23000000%22%20d%3D%22M0%2C3L6%2C9L12%2C3H0Z%22%3E%3C/path%3E%3C/svg%3E');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 10px;
+    width: 110px;
+}
+
+.title {
+    font-family: "Poppins", sans-serif;
+    font-weight: 800;
+    font-style: normal;
+    position: absolute;
+    top: 40px;
+    left: 20px;
+    font-size: 25px;
+    font-style: bold;
+}
+
+.form-container {
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    background-color: #b3b3b3;
+    padding: 20px;
+    border-radius: 35px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px 50px;
+    width: 100%;
+    max-width: 400px;
+    align-items: center;
+    justify-content: center;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.produto, input {
+    padding: 8px;
+    margin-bottom: 15px;
+    border-radius: 15px;
+}
+
+.finalizar { 
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: bold;
+    background-color: #4ade80;
+    color: white;
+    border: none;
+    padding: 8px;
+    border-radius: 15px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 160px;
+    text-align: center;
+    margin-left: 115px;
+    margin-top: 10px;
+}
+
+.person-circle {
+    margin-top: 6px;
+    margin-left: 10px;
+}
+
+.box-seam {
+    margin-top: 5px;
+    margin-left: 10px;
+}
+
+.bi-bell {
+    margin-top: 4px;
+    margin-left: -2px;
+}
+
+.bi-truck {
+    margin-top: 4px;
+    margin-left: 10px;
+}

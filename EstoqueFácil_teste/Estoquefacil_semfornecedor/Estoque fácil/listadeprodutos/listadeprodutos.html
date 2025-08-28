@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Fornecedores</title>
+    <link rel="stylesheet" href="listadeprodutos.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+</head>
+<body>
+    <div class="navbar">
+        <i class="person-circle">
+            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+                <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+            </svg>
+        </i>
+        <a href="../Conta/conta.html">Conta</a>
+        <i class="box-seam">
+            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-box-seam" viewBox="0 0 16 16">
+                <path d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5l2.404.961L10.404 2zm3.564 1.426L5.596 5 8 5.961 14.154 3.5zm3.25 1.7-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464z"/>
+            </svg>
+        </i>
+        <select name="estoque" id="menuestoque">
+            <option value="none">Estoque</option>
+            <option value="../Dashboard/dashfacil.html">Dashboard</option>
+            <option value="../listadefornecedores/listadefornecedores.html">Fornecedores</option>
+            <option value="../cadastrodeprodutos/cadastrodeprodutos.html">Cadastro de Produtos</option>
+            <option value="../registrodeentrada/registrodeentrada.html">Registrar Entrada</option>
+            <option value="../listadeprodutos/listadeprodutos.html">Lista de Produtos</option>
+            <option value="../registrodesaida/registrodesaida.html">Registrar Saída</option>
+        </select>
+        <i class="bi-bell">
+            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-bell" viewBox="0 0 16 16">
+                <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2M8 1.918l-.797.161A4 4 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4 4 0 0 0-3.203-3.92zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5 5 0 0 1 13 6c0 .88.32 4.2 1.22 6"/>
+            </svg>
+        </i>
+        <a href="../notificações/notifica.html">Notificações</a>
+    </div>
+    <div class="content">
+        <h1>Lista de Produtos</h1>
+        <div class="product-list-container">
+            <div class="search-bar">
+                <i class="fas fa-filter"></i>
+                <input type="text" id="procurar" placeholder="digite o nome do produto">
+                <button><i class="fas fa-search"></i></button>
+            </div>
+            <div class="product-table">
+                <h2>Nome do Produto</h2>
+                <table>
+                    <tr>
+                        <td>produto 1</td><td><i class="fas fa-info-circle info-icon" data-product="arroz"></td><td><i class="fas fa-trash-alt"></i></td>
+                    </tr>
+                </table>
+                <p class="view-more" id="view-more-button" style="display: none;">ver mais</p>
+            </div>            
+        </div>
+
+        <div class="modal" id="product-modal">
+            <div class="modal-content">
+                <span class="close-modal">&times;</span>
+                <h2 id="modal-title"></h2>
+                <div class="modal-details">
+                    <div class="modal-detail">
+                        <label>Categoria:</label>
+                        <span id="modal-category"></span>
+                    </div>
+                    <div class="modal-detail">
+                        <label>Especificação do produto:</label>
+                        <span id="modal-specification"></span>
+                    </div>
+                    <div class="modal-detail">
+                        <label>Quantidade em estoque:</label>
+                        <span id="modal-quantity"></span>
+                    </div>
+                    <div class="modal-detail">
+                        <label>Vencimento:</label>
+                        <span id="modal-expiration"></span>
+                    </div>
+                    <div class="modal-detail">
+                        <label>Fornecedor:</label>
+                        <span id="modal-supplier"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="listadeprodutos.js"></script>
+</body>
+</html>
