@@ -19,43 +19,53 @@ document.addEventListener('DOMContentLoaded', function() {
             detalhesNomeElement.textContent = fornecedor.nome;
             detalhesTelefoneElement.textContent = fornecedor.telefone;
             detalhesEnderecoElement.textContent = fornecedor.endereco;
-            detalhesCategoriaElement.textContent = fornecedor.categoria;
+            detalhesCategoriaElement.textContent = fornecedor.categorias ? fornecedor.categorias.join(', ') : 'Não especificada';
             detalhesFornecedorModal.style.display = 'block';
         }
     }
 
     // Função para renderizar os fornecedores na lista
     function renderFornecedores(fornecedores) {
-        fornecedoresList.innerHTML = ''; // Limpa a lista antes de renderizar
+    fornecedoresList.innerHTML = ''; // Limpa a lista antes de renderizar
 
-        fornecedores.forEach(fornecedor => {
-            const li = document.createElement('li');
-            li.innerHTML = `
-                <span>${fornecedor.nome}</span>
-                <div>
-                    <button class="detalhes-button" data-nome="${fornecedor.nome}"><i class="fas fa-info-circle"></i></button>
-                    <button class="delete-button" data-nome="${fornecedor.nome}"><i class="fas fa-trash"></i></button>
-                </div>
-            `;
-            fornecedoresList.appendChild(li);
-        });
+    // Adiciona o cabeçalho da lista
+    const headerLi = document.createElement('li');
+    headerLi.classList.add('header');
+    headerLi.innerHTML = `
+        <span class="header-name">Nome do Fornecedor</span>
+        <span class="header-category">Categoria</span>
+        <span class="header-actions">Ações</span>
+    `;
+    fornecedoresList.appendChild(headerLi);
 
-        // Adiciona ouvintes de evento aos botões de exclusão
-        document.querySelectorAll('.delete-button').forEach(button => {
-            button.addEventListener('click', function() {
-                const nome = this.dataset.nome;
-                deleteFornecedor(nome);
-            });
-        });
+    fornecedores.forEach(fornecedor => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+    <span>${fornecedor.nome}</span>
+    <span>${fornecedor.categorias ? fornecedor.categorias.join(', ') : 'Não especificada'}</span>
+    <div>
+        <button class="detalhes-button" data-nome="${fornecedor.nome}"><i class="fas fa-info-circle"></i></button>
+        <button class="delete-button" data-nome="${fornecedor.nome}"><i class="fas fa-trash"></i></button>
+    </div>
+    `;
+        fornecedoresList.appendChild(li);
+    });
 
-        // Adiciona ouvintes de evento aos botões de detalhes
-        document.querySelectorAll('.detalhes-button').forEach(button => {
-            button.addEventListener('click', function() {
-                const nome = this.dataset.nome;
-                showDetalhes(nome);
-            });
+    // Adiciona ouvintes de evento aos botões de exclusão e detalhes
+    document.querySelectorAll('.delete-button').forEach(button => {
+        button.addEventListener('click', function() {
+            const nome = this.dataset.nome;
+            deleteFornecedor(nome);
         });
-    }
+    });
+
+    document.querySelectorAll('.detalhes-button').forEach(button => {
+        button.addEventListener('click', function() {
+            const nome = this.dataset.nome;
+            showDetalhes(nome);
+        });
+    });
+}
 
     // Função para excluir um fornecedor
     function deleteFornecedor(nome) {

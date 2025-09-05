@@ -25,44 +25,55 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelector('form').addEventListener('submit', function(event) {
         event.preventDefault();
 
-        const produto = produtoSelect.value;
+        const produtoSelecionado = produtoSelect.value;
         const quantidade = document.getElementById('quantidade').value;
-        const fornecedor = fornecedorSelect.value;
+        const fornecedorSelecionado = fornecedorSelect.value;
         const vencimento = document.getElementById('vencimento').value;
         const lote = document.getElementById('lote').value;
 
-        if (produto === 'none' || !quantidade || fornecedor === 'none' || !vencimento || !lote) {
+        if (produtoSelecionado === 'none' || !quantidade || fornecedorSelecionado === 'none' || !vencimento || !lote) {
             alert('Por favor, preencha todos os campos.');
             return;
         }
 
-        const entrada = {
-            produto: produto,
+        const produtos = JSON.parse(localStorage.getItem('produtos')) || [];
+        const fornecedores = JSON.parse(localStorage.getItem('fornecedores')) || [];
+
+        const produtoObj = produtos.find(p => p.nome === produtoSelecionado);
+        const fornecedorObj = fornecedores.find(f => f.nome === fornecedorSelecionado);
+        
+        // Validação da categoria (já está correta)
+        if (!fornecedorObj.categorias.includes(produtoObj.categoria)) {
+            alert(`O fornecedor "${fornecedorSelecionado}" não entrega a categoria "${produtoObj.categoria}". Por favor, selecione outro fornecedor.`);
+            return;
+        }
+
+        // Criar o objeto de lote para adicionar ao produto
+        const novoLote = {
             quantidade: parseInt(quantidade),
-            fornecedor: fornecedor,
+            fornecedor: fornecedorSelecionado,
             vencimento: vencimento,
             lote: lote
         };
 
-        // Salva a entrada no localStorage
-        let entradas = JSON.parse(localStorage.getItem('entradas')) || [];
-        entradas.push(entrada);
-        localStorage.setItem('entradas', JSON.stringify(entradas));
+        // Adiciona o novo lote ao array de estoque do produto
+        produtoObj.estoque.push(novoLote);
+        
+        // Salva a lista de produtos atualizada no localStorage
+        localStorage.setItem('produtos', JSON.stringify(produtos));
 
         alert('Entrada registrada com sucesso!');
-        document.querySelector('form').reset(); // Limpa o formulário
+        document.querySelector('form').reset();
         window.location.href = '../listadeprodutos/listadeprodutos.html';
     });
-});
 
-document.addEventListener("DOMContentLoaded", function () {
-  const menuEstoque = document.getElementById("menuestoque");
+    const menuEstoque = document.getElementById("menuestoque");
 
-  menuEstoque.addEventListener("change", function() {
-      const paginaSelecionada = this.value;
+    menuEstoque.addEventListener("change", function() {
+        const paginaSelecionada = this.value;
 
-      if (paginaSelecionada && paginaSelecionada !== "none") {
-          window.location.href = paginaSelecionada;
-      }
-  });
+        if (paginaSelecionada && paginaSelecionada !== "none") {
+            window.location.href = paginaSelecionada;
+        }
+    });
 });
