@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     let produtos = JSON.parse(localStorage.getItem('produtos')) || [];
     let entradas = JSON.parse(localStorage.getItem('entradas')) || [];
+    let saidas = JSON.parse(localStorage.getItem('saidas')) || []; // Carrega as saídas também
 
     // Preenche o select de produtos
     produtos.forEach(produto => {
@@ -20,10 +21,10 @@ document.addEventListener('DOMContentLoaded', function() {
         if (produtoSelecionado) {
             const quantidadeEmEstoque = calcularQuantidadeEmEstoque(produtoSelecionado);
             estoqueDisponivelDiv.textContent = `Quantidade em estoque: ${quantidadeEmEstoque}`;
-            quantidadeInput.max = quantidadeEmEstoque; // Define o máximo permitido
+            quantidadeInput.max = quantidadeEmEstoque;
         } else {
             estoqueDisponivelDiv.textContent = '';
-            quantidadeInput.removeAttribute('max'); // Remove o máximo se nenhum produto for selecionado
+            quantidadeInput.removeAttribute('max');
         }
     }
 
@@ -40,7 +41,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         // Subtrai as quantidades de saída
-        const saidas = JSON.parse(localStorage.getItem('saidas')) || [];
         saidas.forEach(saida => {
             if (saida.produto === produtoNome) {
                 quantidadeSaida += saida.quantidade;
@@ -53,12 +53,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Atualiza a quantidade disponível quando o produto é selecionado
     produtoSelect.addEventListener('change', atualizarEstoqueDisponivel);
 
-    // Atualiza a quantidade disponível quando a quantidade é alterada
-    quantidadeInput.addEventListener('input', function() {
-        atualizarEstoqueDisponivel();
-    });
-
-    // Função para lidar com o envio do formulário
+    // Evento de envio do formulário
     document.querySelector('form').addEventListener('submit', function(event) {
         event.preventDefault();
 
@@ -66,7 +61,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const quantidade = parseInt(quantidadeInput.value);
         const quantidadeEmEstoque = calcularQuantidadeEmEstoque(produto);
 
-        if (!produto) {
+        if (!produto || produto === "none") {
             alert('Por favor, selecione um produto.');
             return;
         }
@@ -76,30 +71,33 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        const saida = {
+        const novaSaida = {
+            id: Date.now(),
             produto: produto,
             quantidade: quantidade
         };
 
-        // Salva a saída no localStorage
-        let saidas = JSON.parse(localStorage.getItem('saidas')) || [];
-        saidas.push(saida);
+        // Adiciona a nova saída ao array existente
+        saidas.push(novaSaida);
+        
+        // Salva o array de saídas atualizado no localStorage
         localStorage.setItem('saidas', JSON.stringify(saidas));
 
         alert('Saída registrada com sucesso!');
         document.querySelector('form').reset();
-        atualizarEstoqueDisponivel();
+        
+        // Redireciona para a lista de produtos para atualizar o estoque
+        window.location.href = '../listadeprodutos/listadeprodutos.html';
     });
+    
+    // Atualiza a quantidade inicial
+    atualizarEstoqueDisponivel();
 
-    atualizarEstoqueDisponivel(); // Atualiza a quantidade inicial
-});
-
-const menuEstoque = document.getElementById("menuestoque");
-
-menuEstoque.addEventListener("change", function () {
-  const paginaSelecionada = this.value;
-
-  if (paginaSelecionada && paginaSelecionada !== "none") {
-      window.location.href = paginaSelecionada;
-  }
+    const menuEstoque = document.getElementById("menuestoque");
+    menuEstoque.addEventListener("change", function () {
+        const paginaSelecionada = this.value;
+        if (paginaSelecionada && paginaSelecionada !== "none") {
+            window.location.href = paginaSelecionada;
+        }
+    });
 });

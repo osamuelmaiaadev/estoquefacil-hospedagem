@@ -1,160 +1,124 @@
-const notificationList = document.querySelector('.notification-list');
-        const notificationDetails = document.getElementById('notification-details');
-        const detailsText = document.getElementById('details-text');
-        const closeDetailsButton = document.getElementById('close-details');
-        const titleElement = document.querySelector('.notification-title-page');
+document.addEventListener('DOMContentLoaded', () => {
+    const produtos = JSON.parse(localStorage.getItem('produtos')) || [];
+    const entradas = JSON.parse(localStorage.getItem('entradas')) || [];
+    const saidas = JSON.parse(localStorage.getItem('saidas')) || [];
+    const stockAlertsContainer = document.getElementById('stock-alerts');
+    const noAlertsMessage = document.getElementById('no-alerts-message');
+    const clearAllBtn = document.querySelector('.clear-all-btn');
 
-        let produtos = JSON.parse(localStorage.getItem('produtos')) || [];
-        let entradas = JSON.parse(localStorage.getItem('entradas')) || [];
-        let saidas = JSON.parse(localStorage.getItem('saidas')) || [];
+    function calcularEstoque() {
+        const estoquePorProduto = {};
+        const alertasEstoqueBaixo = [];
+        const alertasEstoqueAlto = [];
 
-        const notificationData = {};
-
-        function calcularQuantidadeEmEstoque(produtoNome) {
-            let quantidadeEntrada = 0;
-            let quantidadeSaida = 0;
-
-            entradas.forEach(entrada => {
-                if (entrada.produto === produtoNome) {
-                    quantidadeEntrada += entrada.quantidade;
-                }
-            });
-
-            saidas.forEach(saida => {
-                if (saida.produto === produtoNome) {
-                    quantidadeSaida += saida.quantidade;
-                }
-            });
-
-            return quantidadeEntrada - quantidadeSaida;
-        }
-
-        function generateNotifications() {
-            notificationList.innerHTML = '<h2 class="notification-list-title">Título da Notificação</h2>';
-
-            const vencendo = [];
-            const baixoEstoque = [];
-            const hoje = new Date();
-
-            produtos.forEach(produto => {
-                const quantidadeEstoque = calcularQuantidadeEmEstoque(produto.nome);
-                const entrada = entradas.find(e => e.produto === produto.nome);
-
-                if (entrada) {
-                    const dataVencimento = new Date(entrada.vencimento);
-                    const diffDays = Math.ceil((dataVencimento - hoje) / (1000 * 60 * 60 * 24));
-
-                    if (diffDays === 0) {
-                        vencendo.push({ produto: produto.nome, mensagem: 'vence hoje' });
-                    } else if (diffDays <= 3 && diffDays > 0) {
-                        vencendo.push({ produto: produto.nome, mensagem: `vence em ${diffDays} dias` });
-                    }
-                }
-
-                if (quantidadeEstoque < 5) {
-                    baixoEstoque.push({ produto: produto.nome, estoque: quantidadeEstoque });
-                }
-            });
-
-            if (vencendo.length === 0 && baixoEstoque.length === 0) {
-                notificationList.innerHTML += '<p style="text-align: center;">Sem notificações</p>';
-            } else {
-                vencendo.forEach(item => {
-                    const notificationItem = document.createElement('div');
-                    notificationItem.className = 'notification-item';
-                    notificationItem.setAttribute('data-id', `vencendo-${item.produto}`);
-                    notificationItem.innerHTML = `
-                        <span class="notification-title">Alimento ${item.produto} ${item.mensagem}</span>
-                        <div class="notification-actions">
-                            <i class="fas fa-info-circle notification-icon info-icon"></i>
-                            <i class="fas fa-trash-alt notification-icon delete-icon"></i>
-                        </div>
-                    `;
-                    notificationList.appendChild(notificationItem);
-
-                    notificationData[`vencendo-${item.produto}`] = {
-                        title: `Alimento ${item.produto} ${item.mensagem}`,
-                        message: `O alimento ${item.produto} ${item.mensagem}. Verifique e tome as medidas necessárias.`,
-                    };
-                });
-
-                baixoEstoque.forEach(item => {
-                    const notificationItem = document.createElement('div');
-                    notificationItem.className = 'notification-item';
-                    notificationItem.setAttribute('data-id', `baixoEstoque-${item.produto}`);
-                    notificationItem.innerHTML = `
-                        <span class="notification-title">Baixo estoque de ${item.produto}</span>
-                        <div class="notification-actions">
-                            <i class="fas fa-info-circle notification-icon info-icon"></i>
-                            <i class="fas fa-trash-alt notification-icon delete-icon"></i>
-                        </div>
-                    `;
-                    notificationList.appendChild(notificationItem);
-
-                    notificationData[`baixoEstoque-${item.produto}`] = {
-                        title: `Baixo estoque de ${item.produto}`,
-                        message: `O estoque de ${item.produto} está em apenas ${item.estoque} unidades.  Considere repor o estoque.`,
-                    };
-                });
-            }
-
-            addEventListeners();
-        }
-
-        function showNotificationDetails(id) {
-            const data = notificationData[id];
-            if (data) {
-                detailsText.innerHTML = `<h2>${data.title}</h2><p>${data.message}</p>`;
-                notificationDetails.classList.add('show');
-            }
-        }
-
-        function addEventListeners() {
-            const notificationItems = document.querySelectorAll('.notification-item');
-
-            notificationItems.forEach(item => {
-                const infoIcon = item.querySelector('.info-icon');
-                const deleteIcon = item.querySelector('.delete-icon');
-
-                infoIcon.addEventListener('click', (event) => {
-                    event.stopPropagation();
-                    const notificationId = item.getAttribute('data-id');
-                    showNotificationDetails(notificationId);
-                });
-
-                deleteIcon.addEventListener('click', (event) => {
-                    event.stopPropagation();
-                    item.remove();
-                    delete notificationData[item.getAttribute('data-id')];
-                    notificationDetails.classList.remove('show');
-                });
-
-                item.addEventListener('click', () => {
-                    const notificationId = item.getAttribute('data-id');
-                    showNotificationDetails(notificationId);
-                });
-            });
-        }
-
-        closeDetailsButton.addEventListener('click', () => {
-            notificationDetails.classList.remove('show');
+        // Inicializa o estoque de cada produto e verifica a necessidade de alerta
+        produtos.forEach(produto => {
+            estoquePorProduto[produto.nome] = 0;
         });
 
-        window.addEventListener('click', (event) => {
-            if (event.target === notificationDetails) {
-                notificationDetails.classList.remove('show');
+        // Atualiza as quantidades com entradas e saídas
+        entradas.forEach(entrada => {
+            if (estoquePorProduto[entrada.produto] !== undefined) {
+                estoquePorProduto[entrada.produto] += entrada.quantidade;
             }
         });
 
-        generateNotifications();
-        setInterval(generateNotifications, 60 * 60 * 1000);
+        saidas.forEach(saida => {
+            if (estoquePorProduto[saida.produto] !== undefined) {
+                estoquePorProduto[saida.produto] -= saida.quantidade;
+            }
+        });
 
-        const menuEstoque = document.getElementById("menuestoque");
+        // Cria os alertas de estoque baixo ou alto
+        produtos.forEach(produto => {
+            const quantidadeAtual = estoquePorProduto[produto.nome];
+            if (quantidadeAtual < produto.quantidadeMinima) {
+                alertasEstoqueBaixo.push({
+                    nome: produto.nome,
+                    quantidadeAtual: quantidadeAtual,
+                    quantidadeMinima: produto.quantidadeMinima
+                });
+            }
+            if (produto.quantidadeMaxima && quantidadeAtual > produto.quantidadeMaxima) {
+                 alertasEstoqueAlto.push({
+                    nome: produto.nome,
+                    quantidadeAtual: quantidadeAtual,
+                    quantidadeMaxima: produto.quantidadeMaxima
+                });
+            }
+        });
 
-        menuEstoque.addEventListener("change", function () {
+        return {
+            baixo: alertasEstoqueBaixo,
+            alto: alertasEstoqueAlto
+        };
+    }
+
+    function exibirAlertas() {
+        const { baixo, alto } = calcularEstoque();
+
+        stockAlertsContainer.innerHTML = '';
+        const temAlertas = baixo.length > 0 || alto.length > 0;
+        if (!temAlertas) {
+             stockAlertsContainer.appendChild(noAlertsMessage); // Adiciona a mensagem de volta se não houver alertas
+             noAlertsMessage.style.display = 'block';
+        } else {
+            noAlertsMessage.style.display = 'none';
+        }
+
+
+        if (baixo.length > 0) {
+            baixo.forEach(alerta => {
+                const card = document.createElement('div');
+                card.classList.add('alert-card', 'low-stock');
+                card.innerHTML = `
+                    <i class="fas fa-exclamation-triangle alert-icon"></i>
+                    <p class="alert-text">
+                        O produto **${alerta.nome}** está com estoque baixo. A quantidade atual é de **${alerta.quantidadeAtual}**, abaixo do mínimo de **${alerta.quantidadeMinima}**.
+                    </p>
+                `;
+                stockAlertsContainer.appendChild(card);
+            });
+        }
+
+        if (alto.length > 0) {
+            alto.forEach(alerta => {
+                const card = document.createElement('div');
+                card.classList.add('alert-card', 'high-stock');
+                card.innerHTML = `
+                    <i class="fas fa-info-circle alert-icon"></i>
+                    <p class="alert-text">
+                        O produto **${alerta.nome}** está com estoque alto. A quantidade atual é de **${alerta.quantidadeAtual}**, acima do máximo de **${alerta.quantidadeMaxima}**.
+                    </p>
+                `;
+                stockAlertsContainer.appendChild(card);
+            });
+        }
+    }
+    
+    // Ação para o botão "Apagar Todos"
+    clearAllBtn.addEventListener('click', () => {
+        if (confirm('Tem certeza que deseja apagar todos os alertas? Esta ação não pode ser desfeita.')) {
+            // Como os alertas são calculados dinamicamente, "apagar" significa apenas recarregar a lista
+            // Se você quiser que o usuário possa "dispensar" um alerta específico, seria preciso armazenar
+            // um estado de "dispensado" para cada alerta no localStorage.
+            stockAlertsContainer.innerHTML = '';
+            stockAlertsContainer.appendChild(noAlertsMessage);
+            noAlertsMessage.style.display = 'block';
+            
+            // Para "apagar" de verdade (se houver a necessidade de persistir o estado de um alerta dispensado)
+            // você precisaria de um array de alertas no localStorage e remover eles de lá.
+            // Por enquanto, esta ação é mais um "limpar a tela de alertas visíveis".
+        }
+    });
+
+    exibirAlertas();
+
+    const menuEstoque = document.getElementById("menuestoque");
+    menuEstoque.addEventListener("change", function() {
         const paginaSelecionada = this.value;
-
         if (paginaSelecionada && paginaSelecionada !== "none") {
-                window.location.href = paginaSelecionada;
+            window.location.href = paginaSelecionada;
         }
+    });
 });

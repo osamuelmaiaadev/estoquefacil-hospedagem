@@ -1,5 +1,3 @@
-// registrodeentrada.js
-
 document.addEventListener('DOMContentLoaded', function() {
     const produtoSelect = document.getElementById('produto');
     const fornecedorSelect = document.getElementById('fornecedor');
@@ -36,31 +34,36 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        const produtos = JSON.parse(localStorage.getItem('produtos')) || [];
-        const fornecedores = JSON.parse(localStorage.getItem('fornecedores')) || [];
+        const produtosSalvos = JSON.parse(localStorage.getItem('produtos')) || [];
+        const fornecedoresSalvos = JSON.parse(localStorage.getItem('fornecedores')) || [];
 
-        const produtoObj = produtos.find(p => p.nome === produtoSelecionado);
-        const fornecedorObj = fornecedores.find(f => f.nome === fornecedorSelecionado);
+        const produtoObj = produtosSalvos.find(p => p.nome === produtoSelecionado);
+        const fornecedorObj = fornecedoresSalvos.find(f => f.nome === fornecedorSelecionado);
         
-        // Validação da categoria (já está correta)
-        if (!fornecedorObj.categorias.includes(produtoObj.categoria)) {
+        // Validação da categoria
+        if (fornecedorObj && produtoObj && !fornecedorObj.categorias.includes(produtoObj.categoria)) {
             alert(`O fornecedor "${fornecedorSelecionado}" não entrega a categoria "${produtoObj.categoria}". Por favor, selecione outro fornecedor.`);
             return;
         }
 
-        // Criar o objeto de lote para adicionar ao produto
-        const novoLote = {
+        // Recupera o array de entradas do localStorage
+        const entradas = JSON.parse(localStorage.getItem('entradas')) || [];
+
+        // Cria o novo objeto de entrada para adicionar ao localStorage
+        const novaEntrada = {
+            id: Date.now(), // Adiciona um ID único
+            produto: produtoSelecionado,
             quantidade: parseInt(quantidade),
             fornecedor: fornecedorSelecionado,
             vencimento: vencimento,
             lote: lote
         };
 
-        // Adiciona o novo lote ao array de estoque do produto
-        produtoObj.estoque.push(novoLote);
+        // Adiciona a nova entrada no INÍCIO do array
+        entradas.unshift(novaEntrada);
         
-        // Salva a lista de produtos atualizada no localStorage
-        localStorage.setItem('produtos', JSON.stringify(produtos));
+        // Salva o array de entradas atualizado de volta no localStorage
+        localStorage.setItem('entradas', JSON.stringify(entradas));
 
         alert('Entrada registrada com sucesso!');
         document.querySelector('form').reset();
@@ -68,7 +71,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     const menuEstoque = document.getElementById("menuestoque");
-
     menuEstoque.addEventListener("change", function() {
         const paginaSelecionada = this.value;
 

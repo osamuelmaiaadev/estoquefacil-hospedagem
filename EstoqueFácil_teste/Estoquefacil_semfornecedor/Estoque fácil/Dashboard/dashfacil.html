@@ -6,8 +6,9 @@
     <title>Dashboard</title>
     <link rel="stylesheet" href="dashfacil.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 </head>
-<body>
+<body class="dashboard-page">
     <div class="navbar">
         <i class="person-circle">
             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
@@ -38,27 +39,50 @@
         <a href="../notificações/notifica.html">Notificações</a>
     </div>
 
-    <div class="title">
-        <h2>Dashboard:</h2>
-    </div>
+    <div class="container">
+        <h2 class="dashboard-title">Dashboard</h2>
+        <div class="dashboard-cards-container">
+            <a href="../listadeprodutos/listadeprodutos.html" class="dashboard-card-link">
+                <div class="dashboard-card info-card">
+                    <h3>Total de Produtos</h3>
+                    <p id="total-produtos">0</p>
+                </div>
+            </a>
+            <a href="../notificações/notifica.html" class="dashboard-card-link">
+                <div class="dashboard-card alert-card">
+                    <h3>Alertas de Estoque Mínimo</h3>
+                    <p id="estoque-minimo">0</p>
+                </div>
+            </a>
+            <a href="#" class="dashboard-card-link">
+                <div class="dashboard-card warning-card">
+                    <h3>Vencimento Próximo</h3>
+                    <p id="vencimento-proximo">0</p>
+                </div>
+            </a>
+            <a href="#" class="dashboard-card-link">
+                <div class="dashboard-card danger-card">
+                    <h3>Produtos Vencidos</h3>
+                    <p id="produtos-vencidos">0</p>
+                </div>
+            </a>
+        </div>
 
-    <div class="content">
-        <table class="venceu">
-            <tr>
-                <th>Alimentos desperdiçados por vencimento:</th>
-            </tr>
-            <tr>
-                <td id="vencidos"></td>
-            </tr>
-        </table>
-        <table class="venceu">
-            <tr>
-                <th>Alertas:</th>
-            </tr>
-            <tr>
-                <td id="alertas"></td>
-            </tr>
-        </table>
+        <div class="dashboard-section">
+            <h3 class="section-title">Itens Críticos (Vencidos e Próximos do Vencimento)</h3>
+            <table class="critical-items-table">
+                <thead>
+                    <tr>
+                        <th>Produto</th>
+                        <th>Vencimento</th>
+                        <th>Dias Restantes</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="critical-tbody">
+                    </tbody>
+            </table>
+        </div>
     </div>
     <script src="dashfacil.js"></script>
 </body>

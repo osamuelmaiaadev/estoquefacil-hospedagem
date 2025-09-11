@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const productTable = document.querySelector('.product-table table');
+    const productTbody = document.getElementById('product-tbody');
     const modal = document.getElementById('product-modal');
     const modalTitle = document.getElementById('modal-title');
     const modalCategory = document.getElementById('modal-category');
@@ -9,32 +9,32 @@ document.addEventListener('DOMContentLoaded', function() {
     const viewMoreButton = document.getElementById('view-more-button');
     const procurar = document.getElementById('procurar');
 
-    // Carrega apenas o array de produtos, que agora inclui o estoque
+    // Carrega produtos, entradas E saídas do localStorage
     let produtos = JSON.parse(localStorage.getItem('produtos')) || [];
+    let entradas = JSON.parse(localStorage.getItem('entradas')) || [];
+    let saidas = JSON.parse(localStorage.getItem('saidas')) || [];
 
-    // Função para calcular a quantidade total somando todos os lotes de um produto
-    function calcularQuantidadeTotal(produto) {
-        if (!produto.estoque || produto.estoque.length === 0) {
-            return 0;
-        }
-        return produto.estoque.reduce((total, lote) => total + lote.quantidade, 0);
+    // Função para calcular a quantidade total
+    function calcularQuantidadeTotal(produtoNome) {
+        const quantidadeEntrada = entradas
+            .filter(entrada => entrada.produto === produtoNome)
+            .reduce((total, entrada) => total + entrada.quantidade, 0);
+
+        const quantidadeSaida = saidas
+            .filter(saida => saida.produto === produtoNome)
+            .reduce((total, saida) => total + saida.quantidade, 0);
+            
+        return quantidadeEntrada - quantidadeSaida;
     }
 
     // Função para criar e exibir a tabela de produtos
     function createProductTable(produtosParaExibir = produtos) {
-        productTable.innerHTML = `
-            <tr>
-                <td>Nome do Produto</td>
-                <td>Quantidade Total</td>
-                <td>Detalhes</td>
-                <td>Apagar</td>
-            </tr>
-        `;
+        productTbody.innerHTML = '';
 
         const produtosExibidos = produtosParaExibir.slice(0, 15);
 
         produtosExibidos.forEach(produto => {
-            const quantidadeTotal = calcularQuantidadeTotal(produto);
+            const quantidadeTotal = calcularQuantidadeTotal(produto.nome);
             const row = document.createElement('tr');
             row.innerHTML = `
                 <td>${produto.nome}</td>
@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <td><i class="fas fa-info-circle info-icon" data-product="${produto.nome}"></i></td>
                 <td><i class="fas fa-trash-alt" data-product="${produto.nome}"></i></td>
             `;
-            productTable.appendChild(row);
+            productTbody.appendChild(row);
         });
 
         if (produtosParaExibir.length > 15 && produtosParaExibir === produtos) {
@@ -83,12 +83,12 @@ document.addEventListener('DOMContentLoaded', function() {
             modalCategory.textContent = produto.categoria;
             modalSpecification.textContent = produto.especificacao;
 
-            // Limpa o conteúdo do contêiner de lotes antes de preencher
             modalLotesContainer.innerHTML = '<h3>Detalhes dos Lotes:</h3>';
             
-            if (produto.estoque && produto.estoque.length > 0) {
-                // Itera sobre cada lote e cria um novo elemento para exibi-lo
-                produto.estoque.forEach(lote => {
+            const lotesDoProduto = entradas.filter(entrada => entrada.produto === productName);
+            
+            if (lotesDoProduto.length > 0) {
+                lotesDoProduto.forEach(lote => {
                     const loteDiv = document.createElement('div');
                     loteDiv.classList.add('lote-details');
                     loteDiv.innerHTML = `
@@ -104,34 +104,37 @@ document.addEventListener('DOMContentLoaded', function() {
                 modalLotesContainer.innerHTML += '<p>Nenhum lote registrado para este produto.</p>';
             }
 
-            modal.style.display = 'block'; // Exibe o modal
+            modal.style.display = 'block';
         } else {
             alert('Detalhes do produto não encontrados.');
         }
     }
 
-    // Função para deletar um produto e todos os seus lotes
+    // Função para deletar um produto e seus lotes correspondentes
     function deleteProduct(productName) {
-        if (confirm(`Tem certeza que deseja excluir ${productName} e todos os seus lotes?`)) {
+        if (confirm(`Tem certeza que deseja excluir ${productName} e todas as suas entradas?`)) {
             produtos = produtos.filter(p => p.nome !== productName);
+            entradas = entradas.filter(entrada => entrada.produto !== productName);
+            saidas = saidas.filter(saida => saida.produto !== productName); // Adicionado para limpar as saídas também
+            
             localStorage.setItem('produtos', JSON.stringify(produtos));
+            localStorage.setItem('entradas', JSON.stringify(entradas));
+            localStorage.setItem('saidas', JSON.stringify(saidas)); // Salva as saídas atualizadas
+            
             createProductTable();
         }
     }
 
-    // Adiciona o event listener para a barra de pesquisa
     procurar.addEventListener('input', function() {
         const searchTerm = this.value.toLowerCase();
         const filteredProdutos = produtos.filter(produto => produto.nome.toLowerCase().includes(searchTerm));
         createProductTable(filteredProdutos);
     });
 
-    // Event listener para fechar o modal
     closeModal.addEventListener('click', function() {
         modal.style.display = 'none';
     });
 
-    // Event listener para fechar o modal ao clicar fora dele
     window.addEventListener('click', function(event) {
         if (event.target === modal) {
             modal.style.display = 'none';
@@ -143,17 +146,13 @@ document.addEventListener('DOMContentLoaded', function() {
         this.style.display = 'none';
     });
 
-    // Chama a função inicial para exibir a tabela
     createProductTable();
-});
-
-// Lógica para o menu de navegação
-const menuEstoque = document.getElementById("menuestoque");
-
+    
+    const menuEstoque = document.getElementById("menuestoque");
     menuEstoque.addEventListener("change", function() {
         const paginaSelecionada = this.value;
-
         if (paginaSelecionada && paginaSelecionada !== "none") {
             window.location.href = paginaSelecionada;
         }
     });
+});

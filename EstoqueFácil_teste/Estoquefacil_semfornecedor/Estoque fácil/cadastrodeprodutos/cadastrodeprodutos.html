@@ -6,6 +6,7 @@
     <title>cadastrodeprodutos</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="cadastrodeprodutos.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <div class="navbar">
@@ -44,6 +45,7 @@
         <form action="#" onsubmit="return false;">
             <Label for="nomedoproduto">Nome do Produto:</Label>
             <input type="text" id="nomedoproduto" placeholder="insira o nome do produto" required>
+            
             <label for="categoria">Categoria:</label>
             <select class="categoria" id="categoria" required>
                 <option value="none">Selecione a categoria</option>
@@ -61,8 +63,16 @@
                 <option value="temperos">Temperos e Especiarias</option>
                 <option value="enlatados">Conservas e Enlatados</option>
             </select>
-            <label for="especificacao">Especificação</label>
-            <input type="text" id="especificacao" placeholder="insira a especificação do produto" required> 
+            
+            <label for="especificacao">Especificação:</label>
+            <input type="text" id="especificacao" placeholder="insira a especificação do produto" required>
+            
+            <label for="quantidadeMinima">Quantidade Mínima:</label>
+            <input type="number" id="quantidadeMinima" placeholder="insira a quantidade mínima" min="0" required>
+            
+            <label for="quantidadeMaxima">Quantidade Máxima:</label>
+            <input type="number" id="quantidadeMaxima" placeholder="insira a quantidade máxima" min="0" required>
+            
             <button class="adicionarproduto" type="submit">Adicionar Produto</button>
         </form>
     </div>

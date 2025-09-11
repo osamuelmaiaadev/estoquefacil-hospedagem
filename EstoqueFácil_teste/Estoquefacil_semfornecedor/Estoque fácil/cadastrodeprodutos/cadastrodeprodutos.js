@@ -1,44 +1,50 @@
-// cadastrodeprodutos.js
-
-document.addEventListener('DOMContentLoaded', function() {
-    const form = document.querySelector('form');
+document.addEventListener('DOMContentLoaded', () => {
+    const form = document.querySelector('.form-container form');
+    const nomeProdutoInput = document.getElementById('nomedoproduto');
+    const categoriaSelect = document.getElementById('categoria');
+    const especificacaoInput = document.getElementById('especificacao');
+    const quantidadeMinimaInput = document.getElementById('quantidadeMinima');
+    const quantidadeMaximaInput = document.getElementById('quantidadeMaxima');
     const menuEstoque = document.getElementById("menuestoque");
 
-    // Lógica para o menu de navegação
-    if (menuEstoque) {
-        menuEstoque.addEventListener("change", function() {
-            const paginaSelecionada = this.value;
-            if (paginaSelecionada && paginaSelecionada !== "none") {
-                window.location.href = paginaSelecionada;
-            }
-        });
-    }
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
 
-    // Lógica para o cadastro de produtos
-    form.addEventListener('submit', function(event) {
-        event.preventDefault(); 
-
-        const nome = document.getElementById('nomedoproduto').value;
-        const categoria = document.getElementById('categoria').value; 
-        const especificacao = document.getElementById('especificacao').value;
-
-        if (!nome || categoria === 'none' || !especificacao) {
+        // Verificação básica para campos vazios
+        if (!nomeProdutoInput.value || categoriaSelect.value === 'none' || !especificacaoInput.value || !quantidadeMinimaInput.value || !quantidadeMaximaInput.value) {
             alert('Por favor, preencha todos os campos.');
             return;
         }
 
-        const produto = {
-            nome: nome,
-            categoria: categoria,
-            especificacao: especificacao,
-            estoque: [] // Adiciona um array para armazenar os lotes e validades
+        const novoProduto = {
+            id: Date.now(),
+            nome: nomeProdutoInput.value,
+            categoria: categoriaSelect.value,
+            especificacao: especificacaoInput.value,
+            quantidadeMinima: parseInt(quantidadeMinimaInput.value),
+            quantidadeMaxima: parseInt(quantidadeMaximaInput.value)
         };
 
-        let produtos = JSON.parse(localStorage.getItem('produtos')) || [];
-        produtos.push(produto);
+        // Recuperar a lista de produtos existente do localStorage
+        const produtos = JSON.parse(localStorage.getItem('produtos')) || [];
+
+        // Adicionar o novo produto à lista
+        produtos.push(novoProduto);
+
+        // Salvar a lista atualizada de volta no localStorage
         localStorage.setItem('produtos', JSON.stringify(produtos));
 
-        alert('Produto cadastrado com sucesso!');
-        window.location.href = '../registrodeentrada/registrodeentrada.html';
+        alert('Produto adicionado com sucesso!');
+        // Limpar o formulário
+
+        form.reset();
+        window.location.href = '../registrodeentrada/registrodeentrada.html'
+    });
+
+    menuEstoque.addEventListener("change", function () {
+        const paginaSelecionada = this.value;
+        if (paginaSelecionada && paginaSelecionada !== "none") {
+            window.location.href = paginaSelecionada;
+        }
     });
 });
