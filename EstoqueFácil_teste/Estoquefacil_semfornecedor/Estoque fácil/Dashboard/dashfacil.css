@@ -70,9 +70,10 @@ body {
 
 .dashboard-page .dashboard-title {
     font-size: 2em;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 20px;
+    color: #2c3e50;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+    text-align: center;
 }
 
 .dashboard-page .dashboard-cards-container {

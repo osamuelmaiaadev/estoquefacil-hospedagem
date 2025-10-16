@@ -2,10 +2,7 @@ body {
     background-color: #f4f4f4;
     margin: 0;
     padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+    font-family: 'Poppins', sans-serif;
 }
 
 .navbar {
@@ -60,14 +57,15 @@ body {
 }
 
 .title {
+    margin-bottom: 1.5rem;
+    color: #2c3e50;
     font-family: "Poppins", sans-serif;
     font-weight: 800;
     font-style: normal;
-    position: absolute;
-    top: 40px;
-    left: 20px;
+    text-align: center;
+    margin-top: 80px; 
+    margin-bottom: 20px;
     font-size: 25px;
-    font-style: bold;
 }
 
 .form-container {
@@ -81,6 +79,9 @@ body {
     padding: 40px 50px;
     width: 100%;
     max-width: 450px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
     align-items: center;
     justify-content: center;
 }

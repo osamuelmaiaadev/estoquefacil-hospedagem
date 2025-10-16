@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 card.innerHTML = `
                     <i class="fas fa-exclamation-triangle alert-icon"></i>
                     <p class="alert-text">
-                        O produto **${alerta.nome}** está com estoque baixo. A quantidade atual é de **${alerta.quantidadeAtual}**, abaixo do mínimo de **${alerta.quantidadeMinima}**.
+                        O produto ${alerta.nome} está com estoque baixo. A quantidade atual é de ${alerta.quantidadeAtual}, abaixo do mínimo de ${alerta.quantidadeMinima}.
                     </p>
                 `;
                 stockAlertsContainer.appendChild(card);
@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 card.innerHTML = `
                     <i class="fas fa-info-circle alert-icon"></i>
                     <p class="alert-text">
-                        O produto **${alerta.nome}** está com estoque alto. A quantidade atual é de **${alerta.quantidadeAtual}**, acima do máximo de **${alerta.quantidadeMaxima}**.
+                        O produto ${alerta.nome} está com estoque alto. A quantidade atual é de ${alerta.quantidadeAtual}, acima do máximo de ${alerta.quantidadeMaxima}.
                     </p>
                 `;
                 stockAlertsContainer.appendChild(card);

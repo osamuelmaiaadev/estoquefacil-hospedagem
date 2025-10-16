@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const usuario = document.getElementById('usuario').value;
         const senha = document.getElementById('senha').value;
 
+        
         const userData = JSON.parse(localStorage.getItem('userData'));
 
         if (userData && userData.usuario === usuario && userData.senha === senha) {
@@ -16,16 +17,18 @@ document.addEventListener('DOMContentLoaded', function () {
             alert('Usuário ou senha incorretos. Por favor, tente novamente.');
         }
     });
-});
 
-document.addEventListener("DOMContentLoaded", function () {
+
     const menuEstoque = document.getElementById("menuestoque");
 
-    menuEstoque.addEventListener("change", function () {
-        const paginaSelecionada = this.value;
+    if (menuEstoque) {
+        menuEstoque.addEventListener("change", function () {
+            const paginaSelecionada = this.value;
 
-        if (paginaSelecionada && paginaSelecionada !== "none") {
-            window.location.href = paginaSelecionada;
-        }
-    });
+            if (paginaSelecionada && paginaSelecionada !== "none") {
+                window.location.href = paginaSelecionada;
+            }
+        });
+    }
 });
+// salvo
