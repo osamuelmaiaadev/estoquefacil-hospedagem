@@ -12,7 +12,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background: url('../assets/img/fundoLogin.jpg') no-repeat center center/cover;
+    background: url('/docs/assets/img/fundoLogin.jpg') no-repeat center center/cover;
     position: relative;
 }
 

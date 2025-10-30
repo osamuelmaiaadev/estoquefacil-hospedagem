@@ -89,7 +89,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Adiciona ouvinte de evento para o botão "Adicionar fornecedor"
     adicionarFornecedorButton.addEventListener('click', function() {
         // Redireciona para cadastrofornecedor.html
-        window.location.href = '../cadastrofornecedor/cadastrofornecedor.html';
+        window.location.href = '../html/cadastrofornecedor.html';
     });
 
     // Fecha a tela de detalhes ao clicar no botão de fechar
