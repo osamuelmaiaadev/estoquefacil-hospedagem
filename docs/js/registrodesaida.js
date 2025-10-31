@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', function() {
         document.querySelector('form').reset();
         
         // Redireciona para a lista de produtos para atualizar o estoque
-        window.location.href = '../listadeprodutos/listadeprodutos.html';
+        window.location.href = './listadeprodutos.html';
     });
     
     // Atualiza a quantidade inicial
