@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         alert('Entrada registrada com sucesso!');
         document.querySelector('form').reset();
-        window.location.href = '../listadeprodutos/listadeprodutos.html';
+        window.location.href = './listadeprodutos.html';
     });
 
     const menuEstoque = document.getElementById("menuestoque");
