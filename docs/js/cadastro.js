@@ -25,6 +25,6 @@ document.addEventListener('DOMContentLoaded', function() {
         localStorage.setItem('userData', JSON.stringify(userData));
 
         alert('Cadastro realizado com sucesso! Você será redirecionado para o login.');
-        window.location.href = 'index.html';
+        window.location.href = './index.html';
     });
 });
