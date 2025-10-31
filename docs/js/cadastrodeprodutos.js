@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Limpar o formulário
 
         form.reset();
-        window.location.href = './html/registrodeentrada.html'
+        window.location.href = './registrodeentrada.html'
     });
 
     menuEstoque.addEventListener("change", function () {
