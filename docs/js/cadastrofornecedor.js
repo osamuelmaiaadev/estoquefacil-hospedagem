@@ -117,7 +117,7 @@ document.addEventListener('DOMContentLoaded', function() {
             alert('Cadastro realizado com sucesso!');
             limparCampos(); // Limpa os campos após o cadastro
             // Redireciona para a página de cadastro de produtos
-            window.location.href = '../cadastrodeprodutos/cadastrodeprodutos.html';
+            window.location.href = './cadastrodeprodutos.html';
         } else {
             alert('Por favor, preencha todos os campos e selecione pelo menos uma categoria.');
         }
