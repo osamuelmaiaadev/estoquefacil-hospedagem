@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (userData && userData.usuario === usuario && userData.senha === senha) {
             alert('Login realizado com sucesso!');
-            window.location.href = './html/dashfacil.html';
+            window.location.href = 'html/dashfacil.html';
         } else {
             alert('Usuário ou senha incorretos. Por favor, tente novamente.');
         }
